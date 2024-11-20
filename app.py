@@ -234,7 +234,139 @@ def login():
 def login_task():
     return render_template('login_task.html')
  
-@app.route('/combined_login', methods=['GET', 'POST'])
+# @app.route('/combined_login', methods=['GET', 'POST'])
+# def combined_login():
+#     username = session.get('username')
+#     if not username:
+#         return redirect(url_for('login'))
+
+#     if request.method == 'POST':
+#         data = request.json
+#         image_data_gesture = data.get('gesture_image')
+#         image_data_face = data.get('face_image')
+
+#         # Gesture Authentication
+#         gesture_authenticated = False
+#         if image_data_gesture:
+#             img_bytes = base64.b64decode(image_data_gesture.split(',')[1])
+#             np_arr = np.frombuffer(img_bytes, np.uint8)
+#             frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+
+#             with mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7) as hands:
+#                 image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#                 results = hands.process(image_rgb)
+
+#                 if results.multi_hand_landmarks:
+#                     for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
+#                         gesture = detect_finger_state(hand_landmarks.landmark, handedness.classification[0].label)
+                        
+#                         # Retrieve gesture from the database
+#                         conn = sqlite3.connect('database.db')
+#                         cursor = conn.cursor()
+#                         cursor.execute('SELECT gesture FROM users WHERE username = ?', (username,))
+#                         row = cursor.fetchone()
+#                         conn.close()
+
+#                         if row and gesture == eval(row[0]):  # Use eval to convert stored string to list
+#                             gesture_authenticated = True
+#                             break
+
+#         # Face Authentication
+#         face_authenticated = False
+#         if image_data_face:
+#             img_bytes = base64.b64decode(image_data_face.split(',')[1])
+#             np_arr = np.frombuffer(img_bytes, np.uint8)
+#             frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+#             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+#             face_encodings = face_recognition.face_encodings(rgb_frame)
+#             if face_encodings:
+#                 conn = sqlite3.connect('database.db')
+#                 cursor = conn.cursor()
+#                 cursor.execute('SELECT face_encoding FROM users WHERE username = ?', (username,))
+#                 row = cursor.fetchone()
+#                 conn.close()
+
+#                 if row:
+#                     registered_encoding = np.frombuffer(row[0], dtype=np.float64)
+#                     matches = face_recognition.compare_faces([registered_encoding], face_encodings[0])
+#                     face_authenticated = matches[0]
+
+#         # Final Decision
+#         if gesture_authenticated and face_authenticated:
+#             return jsonify(success=True, redirect=url_for('login_task'))  # Redirects to the welcome page
+#         else:
+#             return jsonify(success=False, redirect=url_for('login_fail'))  # Redirects to login failure page
+
+#     return render_template('combined_login.html')
+
+ 
+# import speech_recognition as sr
+ 
+# # Combined face and voice authentication route
+# @app.route('/combined1_login', methods=['GET', 'POST'])
+# def combined1_login():
+#     if request.method == 'POST':
+#         username = session.get('username')
+#         if not username:
+#             return jsonify(success=False, message="No username in session.")
+
+#         # Step 1: Authenticate face
+#         image_data = request.json.get('image')
+#         if image_data:
+#             # Convert image to OpenCV format
+#             img_bytes = base64.b64decode(image_data.split(',')[1])
+#             np_arr = np.frombuffer(img_bytes, np.uint8)
+#             frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+#             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+#             # Extract face encoding
+#             face_encodings = face_recognition.face_encodings(rgb_frame)
+#             if face_encodings:
+#                 conn = sqlite3.connect('database.db')
+#                 cursor = conn.cursor()
+#                 cursor.execute('SELECT face_encoding FROM users WHERE username = ?', (username,))
+#                 row = cursor.fetchone()
+#                 conn.close()
+
+#                 if row:
+#                     registered_encoding = np.frombuffer(row[0], dtype=np.float64)
+#                     face_match = face_recognition.compare_faces([registered_encoding], face_encodings[0])
+#                     if not face_match[0]:
+#                         return jsonify(success=False, message="Face authentication failed.")
+#                 else:
+#                     return jsonify(success=False, message="No registered face found.")
+#             else:
+#                 return jsonify(success=False, message="No face detected.")
+
+#         # Step 2: Authenticate voice
+#         recognizer = sr.Recognizer()
+#         with sr.Microphone() as source:
+#             try:
+#                 # Capture audio and convert to text
+#                 audio_data = recognizer.listen(source, timeout=5)
+#                 spoken_passkey = recognizer.recognize_google(audio_data).strip().lower()
+
+#                 conn = sqlite3.connect('database.db')
+#                 cursor = conn.cursor()
+#                 cursor.execute('SELECT passkey FROM users WHERE username = ?', (username,))
+#                 row = cursor.fetchone()
+#                 conn.close()
+
+#                 if row and row[0] == spoken_passkey:
+#                     # Both face and voice match
+#                     return jsonify(success=True, redirect=url_for('welcome'))
+#                 else:
+#                     return jsonify(success=False, message="Voice authentication failed.")
+#             except sr.UnknownValueError:
+#                 return jsonify(success=False, message="Could not understand the audio. Please try again.")
+#             except sr.RequestError as e:
+#                 return jsonify(success=False, message=f"Voice recognition service error: {e}")
+
+#     return render_template('combined1_login.html')
+
+
+@app.route('/combined_login1', methods=['GET', 'POST'])
 def combined_login():
     username = session.get('username')
     if not username:
@@ -244,6 +376,7 @@ def combined_login():
         data = request.json
         image_data_gesture = data.get('gesture_image')
         image_data_face = data.get('face_image')
+        voice_passkey = data.get('voice_passkey')  # Expecting the voice passkey as text
 
         # Gesture Authentication
         gesture_authenticated = False
@@ -292,78 +425,25 @@ def combined_login():
                     matches = face_recognition.compare_faces([registered_encoding], face_encodings[0])
                     face_authenticated = matches[0]
 
+        # Voice Authentication
+        voice_authenticated = False
+        if voice_passkey:
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute('SELECT passkey FROM users WHERE username = ?', (username,))
+            row = cursor.fetchone()
+            conn.close()
+
+            if row and row[0].strip().lower() == voice_passkey.strip().lower():
+                voice_authenticated = True
+
         # Final Decision
-        if gesture_authenticated and face_authenticated:
-            return jsonify(success=True, redirect=url_for('login_task'))  # Redirects to the welcome page
+        if gesture_authenticated and face_authenticated and voice_authenticated:
+            return jsonify(success=True, redirect=url_for('welcome'))  # Redirects to the welcome page
         else:
-            return jsonify(success=False, redirect=url_for('login_fail'))  # Redirects to login failure page
+            return jsonify(success=False, message="Authentication failed. Please try again.")
 
-    return render_template('combined_login.html')
-
- 
-import speech_recognition as sr
- 
-# Combined face and voice authentication route
-@app.route('/combined1_login', methods=['GET', 'POST'])
-def combined1_login():
-    if request.method == 'POST':
-        username = session.get('username')
-        if not username:
-            return jsonify(success=False, message="No username in session.")
-
-        # Step 1: Authenticate face
-        image_data = request.json.get('image')
-        if image_data:
-            # Convert image to OpenCV format
-            img_bytes = base64.b64decode(image_data.split(',')[1])
-            np_arr = np.frombuffer(img_bytes, np.uint8)
-            frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-            # Extract face encoding
-            face_encodings = face_recognition.face_encodings(rgb_frame)
-            if face_encodings:
-                conn = sqlite3.connect('database.db')
-                cursor = conn.cursor()
-                cursor.execute('SELECT face_encoding FROM users WHERE username = ?', (username,))
-                row = cursor.fetchone()
-                conn.close()
-
-                if row:
-                    registered_encoding = np.frombuffer(row[0], dtype=np.float64)
-                    face_match = face_recognition.compare_faces([registered_encoding], face_encodings[0])
-                    if not face_match[0]:
-                        return jsonify(success=False, message="Face authentication failed.")
-                else:
-                    return jsonify(success=False, message="No registered face found.")
-            else:
-                return jsonify(success=False, message="No face detected.")
-
-        # Step 2: Authenticate voice
-        recognizer = sr.Recognizer()
-        with sr.Microphone() as source:
-            try:
-                # Capture audio and convert to text
-                audio_data = recognizer.listen(source, timeout=5)
-                spoken_passkey = recognizer.recognize_google(audio_data).strip().lower()
-
-                conn = sqlite3.connect('database.db')
-                cursor = conn.cursor()
-                cursor.execute('SELECT passkey FROM users WHERE username = ?', (username,))
-                row = cursor.fetchone()
-                conn.close()
-
-                if row and row[0] == spoken_passkey:
-                    # Both face and voice match
-                    return jsonify(success=True, redirect=url_for('welcome'))
-                else:
-                    return jsonify(success=False, message="Voice authentication failed.")
-            except sr.UnknownValueError:
-                return jsonify(success=False, message="Could not understand the audio. Please try again.")
-            except sr.RequestError as e:
-                return jsonify(success=False, message=f"Voice recognition service error: {e}")
-
-    return render_template('combined1_login.html')
+    return render_template('combined_login1.html')
 
  
  

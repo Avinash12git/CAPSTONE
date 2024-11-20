@@ -49,19 +49,19 @@
 <body>
     <h1>Login Options</h1>
     <div class="button-container">
-        <button onclick="redirectToGestureAndFace()">Login with Gesture and Face</button>
-        <button onclick="redirectToFaceAndVoice()">Login with Face and Voice</button>
+        <button onclick="redirectToGestureAndFaceANDVoice()">Login with Gesture and Face and Voice</button>
+        <!-- <button onclick="redirectToFaceAndVoice()">Login with Face and Voice</button> -->
         <!-- <button onclick="redirectToVoice()">Login with Voice</button> -->
     </div>
 
     <script>
-        function redirectToGestureAndFace() {
-            window.location.href = '/combined_login';
+        function redirectToGestureAndFaceANDVoice() {
+            window.location.href = '/combined_login1';
         }
 
-        function redirectToFaceAndVoice() {
-            window.location.href = '/combined1_login';
-        }
+        // function redirectToFaceAndVoice() {
+        //     window.location.href = '/combined1_login';
+        // }
 
         // function redirectToVoice() {
         //     window.location.href = '/voice_login';
