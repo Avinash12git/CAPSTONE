@@ -133,13 +133,6 @@ def face_register():
         return jsonify(success=False, message="No face detected")
     return jsonify(success=False, message="Invalid request")
 
-
-
-
-
-
-
-
 # Registration Success
 @app.route('/register_success')
 def register_success():
