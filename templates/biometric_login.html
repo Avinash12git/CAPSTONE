@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biometric Login</title>
+    <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #0078d7;
+        }
+
+        p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        #message {
+            margin: 15px 0;
+            font-weight: bold;
+            color: #d9534f; /* Error message color */
+        }
+
+        button {
+            background-color: #0078d7;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #005bb5;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            button {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+
+        .auth-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .auth-section div {
+            width: 48%;
+        }
+
+        video {
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid #0078d7;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Biometric Login</h1>
+        <p>Please authenticate using either face or voice recognition.</p>
+
+        <div class="auth-section">
+            <!-- Face Recognition Section -->
+            <div>
+                <h2>Face Authentication</h2>
+                <video id="camera" autoplay></video>
+                <p id="faceMessage"></p>
+            </div>
+
+            <!-- Voice Recognition Section -->
+            <div>
+                <h2>Voice Authentication</h2>
+                <button onclick="startVoiceAuthentication()">Start Voice Authentication</button>
+                <p id="voiceMessage"></p>
+            </div>
+        </div>
+
+        <!-- Authenticate Button -->
+        <button id="authenticateButton">Authenticate</button>
+        <p id="loading">Authenticating, please wait...</p>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        const camera = document.getElementById('camera');
+        const authenticateButton = document.getElementById('authenticateButton');
+        const voiceMessage = document.getElementById('voiceMessage');
+        const loading = document.getElementById('loading');
+        const message = document.getElementById('message');
+        let audioFile;
+
+        // Start camera
+        async function initCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                camera.srcObject = stream;
+            } catch (error) {
+                voiceMessage.textContent = "Error accessing camera: " + error.message;
+                voiceMessage.style.color = "red";
+            }
+        }
+
+        // Handle the authentication
+        authenticateButton.addEventListener('click', async function () {
+            loading.style.display = 'block';
+            message.textContent = '';
+            voiceMessage.textContent = '';
+
+            // Capture face image
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = camera.videoWidth;
+            canvas.height = camera.videoHeight;
+            context.drawImage(camera, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/png');
+
+            // Send face data and voice data to server
+            const formData = new FormData();
+            formData.append('audio', audioFile); // Audio file from voice recognition
+            formData.append('image', imageData.split(',')[1]);
+
+            try {
+                const response = await fetch('/biometric_login', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                message.textContent = result.message || "Authentication failed!";
+                message.style.color = result.success ? "green" : "red";
+
+                if (result.success) {
+                    setTimeout(() => window.location.href = '/welcome', 1000);
+                }
+            } catch (error) {
+                message.textContent = "Error during authentication.";
+                message.style.color = "red";
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+
+        // Voice authentication logic
+        function startVoiceAuthentication() {
+            voiceMessage.innerText = "Listening... Please speak your passkey.";
+
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                const audioData = event.results[0][0].transcript;
+
+                fetch('/voice_login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ audio: audioData })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        voiceMessage.style.color = "#28a745"; // Success color
+                        voiceMessage.innerText = "Voice authentication successful!";
+                    } else {
+                        voiceMessage.style.color = "#d9534f"; // Error color
+                        voiceMessage.innerText = "Voice passkey does not match.";
+                    }
+                })
+                .catch(error => {
+                    voiceMessage.style.color = "#d9534f";
+                    voiceMessage.innerText = 'Error during voice authentication.';
+                });
+            };
+
+            recognition.onerror = function(event) {
+                voiceMessage.style.color = "#d9534f";
+                voiceMessage.innerText = 'Error during speech recognition.';
+            };
+        }
+
+        initCamera(); // Start the camera when the page loads
+    </script>
+</body>
+</html>

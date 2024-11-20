@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Login</title>
+    <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #0078d7;
+        }
+
+        p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        #message {
+            margin: 15px 0;
+            font-weight: bold;
+            color: #d9534f; /* Error message color */
+        }
+
+        button {
+            background-color: #0078d7;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #005bb5;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            button {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Voice Login</h1>
+        <p>Please click the button below and speak your passkey into the microphone.</p>
+        <p id="message"></p>
+        <button onclick="startVoiceAuthentication()">Start Voice Authentication</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function startVoiceAuthentication() {
+            const messageElement = document.getElementById('message');
+            messageElement.innerText = "Listening... Please speak your passkey.";
+
+            // Trigger a POST request to start voice authentication
+            $.ajax({
+                url: '/voice_login',
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        messageElement.style.color = "#28a745"; // Success message color
+                        messageElement.innerText = "Authentication successful!";
+                        setTimeout(() => {
+                            window.location.href = response.redirect; // Redirect to the welcome page
+                        }, 2000);
+                    } else {
+                        messageElement.style.color = "#d9534f"; // Error message color
+                        messageElement.innerText = response.message;
+                    }
+                },
+                error: function(xhr, status, error) {
+                    messageElement.style.color = "#d9534f"; // Error message color
+                    messageElement.innerText = 'Error: ' + error;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

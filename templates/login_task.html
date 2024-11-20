@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Options</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+        }
+
+        h1 {
+            color: #3498db;
+            margin-bottom: 30px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        button {
+            padding: 16px 32px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Login Options</h1>
+    <div class="button-container">
+        <button onclick="redirectToGestureAndFace()">Login with Gesture and Face</button>
+        <button onclick="redirectToFaceAndVoice()">Login with Face and Voice</button>
+        <!-- <button onclick="redirectToVoice()">Login with Voice</button> -->
+    </div>
+
+    <script>
+        function redirectToGestureAndFace() {
+            window.location.href = '/combined_login';
+        }
+
+        function redirectToFaceAndVoice() {
+            window.location.href = '/combined1_login';
+        }
+
+        // function redirectToVoice() {
+        //     window.location.href = '/voice_login';
+        // }
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .container { text-align: center; background-color: #ffffff; padding: 40px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); max-width: 400px; }
+        h1 { font-size: 2.5rem; color: #333333; margin-bottom: 30px; }
+        input { padding: 10px; font-size: 1rem; margin: 10px; width: 80%; border-radius: 8px; }
+        button { background-color: #3498db; color: white; border: none; padding: 12px 20px; font-size: 1.1rem; cursor: pointer; border-radius: 8px; transition: background-color 0.3s ease, transform 0.2s ease; }
+        button:hover { background-color: #2980b9; transform: translateY(-3px); }
+        button:active { transform: translateY(1px); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Register Page</h1>
+        <form method="POST">
+            <input type="text" name="name" placeholder="Enter your name" required><br>
+            <input type="password" name="password" placeholder="Enter your password" required><br>
+            <input type="text" name="passkey" placeholder="Enter your passkey" required><br>
+           <a href="{{url_for('register_task')}}"><button type="submit">Next</button></a>
+        </form>
+    </div>
+</body>
+</html>

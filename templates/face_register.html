@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Face Registration</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        video { border: 2px solid #3498db; border-radius: 8px; }
+        button { margin-top: 20px; padding: 10px 20px; background-color: #3498db; color: white; border: none; cursor: pointer; }
+        #message { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Face Registration</h2>
+    <video id="camera" autoplay></video>
+    <button id="captureButton">Capture</button>
+    <p id="message"></p>
+
+    <script>
+        const camera = document.getElementById('camera');
+        const captureButton = document.getElementById('captureButton');
+        const message = document.getElementById('message');
+
+        // Initialize the camera
+        async function initCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                camera.srcObject = stream;
+            } catch (error) {
+                message.textContent = "Error accessing camera: " + error.message;
+                console.error(error);
+            }
+        }
+
+        // Capture image and send to server
+        captureButton.addEventListener('click', async function () {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = camera.videoWidth;
+            canvas.height = camera.videoHeight;
+            context.drawImage(camera, 0, 0, canvas.width, canvas.height);
+
+            const imageData = canvas.toDataURL('image/png');
+            const response = await fetch('/face_register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: imageData })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                message.textContent = result.message;
+                setTimeout(() => window.location.href = result.redirect, 1000);
+            } else {
+                message.textContent = result.message;
+            }
+        });
+
+        // Start the camera on page load
+        initCamera();
+    </script>
+</body>
+</html>

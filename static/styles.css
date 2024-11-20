@@ -1,0 +1,170 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container for most pages */
+.container {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+}
+
+/* Heading Style */
+h1 {
+    font-size: 2.5rem;
+    color: #333333;
+    margin-bottom: 30px;
+}
+
+/* Buttons */
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* Register Page */
+.register-container {
+    background-color: #f8f9fa;
+    max-width: 500px;
+}
+
+.register-container input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.register-container button {
+    background-color: #2ecc71;
+    margin-top: 20px;
+}
+
+/* Register Task Page */
+.register-task-container {
+    background-color: #f8f9fa;
+    max-width: 500px;
+}
+
+.register-task-container button {
+    background-color: #f39c12;
+    margin-top: 20px;
+}
+
+/* Gesture Register Page */
+.gesture-register-container {
+    background-color: #f8f9fa;
+    max-width: 500px;
+}
+
+.gesture-register-container button {
+    background-color: #9b59b6;
+    margin-top: 20px;
+}
+
+/* Face Register Page */
+.face-register-container {
+    background-color: #f8f9fa;
+    max-width: 500px;
+}
+
+.face-register-container button {
+    background-color: #e74c3c;
+    margin-top: 20px;
+}
+
+/* Success and Failure Pages */
+.success-container, .failure-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+}
+
+.success-container h1 {
+    color: #2ecc71;
+}
+
+.failure-container h1 {
+    color: #e74c3c;
+}
+
+.success-container a, .failure-container a {
+    text-decoration: none;
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.success-container a:hover, .failure-container a:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+}
+
+.success-container a:active, .failure-container a:active {
+    transform: translateY(1px);
+}
+
+/* Index Page */
+.index-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+}
+
+.index-container h1 {
+    color: #333333;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+}
+
+.index-container button {
+    background-color: #3498db;
+    font-size: 1.1rem;
+    padding: 15px 30px;
+}
+
+.index-container button:hover {
+    background-color: #2980b9;
+}

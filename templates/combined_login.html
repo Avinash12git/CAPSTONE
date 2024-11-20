@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined Login</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+        }
+
+        h1 {
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+
+        video {
+            border: 3px solid #3498db;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        #message {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        #loading {
+            font-size: 16px;
+            color: #e74c3c;
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Combined Gesture and Face Authentication</h1>
+    <video id="camera" autoplay></video>
+    <p id="message"></p>
+    <p id="loading">Authenticating, please wait...</p>
+    <button id="captureButton">Authenticate</button>
+
+    <script>
+        const camera = document.getElementById('camera');
+        const message = document.getElementById('message');
+        const loading = document.getElementById('loading');
+        const captureButton = document.getElementById('captureButton');
+
+        async function initCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                camera.srcObject = stream;
+            } catch (error) {
+                message.textContent = "Error accessing camera: " + error.message;
+                message.style.color = 'red';
+                captureButton.disabled = true;
+            }
+        }
+
+        async function authenticate() {
+            loading.style.display = 'block';
+            message.textContent = '';
+
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = camera.videoWidth;
+            canvas.height = camera.videoHeight;
+            context.drawImage(camera, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/png');
+
+            try {
+                const response = await fetch('/combined_login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        gesture_image: imageData,
+                        face_image: imageData
+                    })
+                });
+
+                const result = await response.json();
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else if (result.success) {
+                    message.textContent = "Authentication successful! Redirecting...";
+                    message.style.color = "green";
+                    setTimeout(() => window.location.href = result.redirect, 1000);
+                } else {
+                    message.textContent = "Authentication failed. Please try again.";
+                    message.style.color = "red";
+                }
+            } catch (error) {
+                message.textContent = "Error during authentication.";
+                message.style.color = "red";
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        captureButton.addEventListener('click', authenticate);
+        initCamera();
+    </script>
+</body>
+</html>

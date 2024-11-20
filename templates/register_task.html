@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Task</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; height: 100vh; padding: 0 20px; }
+        
+        .container { 
+            background-color: #ffffff; 
+            padding: 40px; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+            max-width: 500px; 
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 { 
+            font-size: 2rem; 
+            color: #333333; 
+            margin-bottom: 30px; 
+            font-weight: 600;
+        }
+
+        .form-button {
+            background-color: #3498db; 
+            color: white; 
+            border: none; 
+            padding: 14px 20px; 
+            font-size: 1.2rem; 
+            cursor: pointer; 
+            border-radius: 8px; 
+            transition: background-color 0.3s ease, transform 0.2s ease; 
+            margin: 10px 0;
+            width: 80%;
+        }
+
+        .form-button:hover { 
+            background-color: #2980b9; 
+            transform: translateY(-3px); 
+        }
+
+        .form-button:active { 
+            transform: translateY(1px); 
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        .form-container button {
+            width: 100%;
+        }
+
+        p {
+            margin-top: 20px;
+            color: #666666;
+            font-size: 1rem;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Register your Gesture and Face</h1>
+
+        <div class="form-container">
+            <form method="GET" action="{{ url_for('gesture_register') }}">
+                <button type="submit" class="form-button">Register Gesture</button>
+            </form>
+        </div>
+        
+
+        <form method="GET" action="{{ url_for('face_register_page') }}">
+            <button type="submit" class="form-button">Register Face</button>
+        </form>
+        
+
+        <p>Please select an option to continue with your registration.</p>
+    </div>
+</body>
+</html>
