@@ -5,27 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Task</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Arial', sans-serif; background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; height: 100vh; padding: 0 20px; }
-        
-        .container { 
-            background-color: #ffffff; 
-            padding: 40px; 
-            border-radius: 15px; 
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
-            max-width: 500px; 
-            width: 100%;
-            text-align: center;
-        }
-        
-        h1 { 
-            font-size: 2rem; 
-            color: #333333; 
-            margin-bottom: 30px; 
-            font-weight: 600;
+        /* General Body Styling */
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #e0f7fa, #80deea); /* Gradient Background */
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            padding: 0 20px; 
+            margin: 0; 
         }
 
-        .form-button {
+        /* Container Styling */
+        .container { 
+            background-color: rgba(255, 255, 255, 0.9); 
+            padding: 40px 60px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
+            text-align: center; 
+            width: 100%; 
+            max-width: 500px; 
+            transition: transform 0.3s ease-in-out; 
+        }
+
+        .container:hover { 
+            transform: translateY(-10px); 
+        }
+
+        /* Heading Styling */
+        h1 { 
+            font-size: 2rem; 
+            color: #2196F3; 
+            margin-bottom: 30px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+
+        /* Form Button Styling */
+        .form-button { 
             background-color: #3498db; 
             color: white; 
             border: none; 
@@ -34,8 +53,8 @@
             cursor: pointer; 
             border-radius: 8px; 
             transition: background-color 0.3s ease, transform 0.2s ease; 
-            margin: 10px 0;
-            width: 80%;
+            margin: 10px 0; 
+            width: 80%; 
         }
 
         .form-button:hover { 
@@ -47,20 +66,39 @@
             transform: translateY(1px); 
         }
 
-        .form-container {
-            margin-bottom: 20px;
+        /* Paragraph Styling */
+        p { 
+            margin-top: 20px; 
+            color: #666666; 
+            font-size: 1rem; 
         }
 
-        .form-container button {
-            width: 100%;
+        /* Responsive Design */
+        @media (max-width: 768px) { 
+            .container { 
+                padding: 30px; 
+            } 
+            h1 { 
+                font-size: 1.8rem; 
+            } 
+            .form-button { 
+                font-size: 1rem; 
+                padding: 12px 18px; 
+            } 
         }
 
-        p {
-            margin-top: 20px;
-            color: #666666;
-            font-size: 1rem;
+        @media (max-width: 480px) { 
+            .container { 
+                padding: 20px; 
+            } 
+            h1 { 
+                font-size: 1.6rem; 
+            } 
+            .form-button { 
+                font-size: 0.9rem; 
+                padding: 10px 16px; 
+            } 
         }
-
     </style>
 </head>
 <body>
@@ -72,12 +110,10 @@
                 <button type="submit" class="form-button">Register Gesture</button>
             </form>
         </div>
-        
 
         <form method="GET" action="{{ url_for('face_register_page') }}">
             <button type="submit" class="form-button">Register Face</button>
         </form>
-        
 
         <p>Please select an option to continue with your registration.</p>
     </div>

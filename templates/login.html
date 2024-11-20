@@ -5,28 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
+        /* General Body Styling */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background: linear-gradient(135deg, #e0f7fa, #80deea); /* Gradient Background */
+            font-family: 'Arial', sans-serif;
             margin: 0;
-            background-color: #f0f4f8; /* Soft gray background */
-            font-family: Arial, sans-serif;
+            padding: 0;
         }
+
+        /* Login Container Styling */
         .login-container {
-            background-color: #ffffff; /* White card */
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            background-color: rgba(255, 255, 255, 0.9); /* White card with slight transparency */
+            padding: 40px 60px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
             text-align: center;
             max-width: 400px;
             width: 90%;
+            transition: transform 0.3s ease-in-out;
         }
+
+        .login-container:hover {
+            transform: translateY(-10px); /* Floating effect on hover */
+        }
+
+        /* Heading Styling */
         .login-container h2 {
             color: #4A90E2; /* Blue header */
             margin-bottom: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
         }
+
+        /* Input Fields Styling */
         .login-container input {
             width: 100%;
             padding: 12px;
@@ -35,32 +51,41 @@
             border: 1px solid #ddd; /* Light gray border */
             font-size: 16px;
         }
+
+        /* Button Styling */
         .login-container button {
             width: 100%;
             padding: 12px;
             background-color: #4A90E2; /* Blue button */
             border: none;
             border-radius: 5px;
-            color: #fff; /* White text */
+            color: white; /* White text */
             font-weight: bold;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s ease;
         }
+
         .login-container button:hover {
             background-color: #357ABD; /* Darker blue hover */
         }
+
         .login-container p {
             margin-top: 15px;
             font-size: 14px;
         }
+
+        /* Link Styling */
         .login-container a {
             color: #4A90E2; /* Blue link */
             text-decoration: none;
         }
+
         .login-container a:hover {
             text-decoration: underline;
         }
+
+        /* Error Message Styling */
         .error-message {
             color: #D8000C; /* Red error text */
             background-color: #FFBABA; /* Light red background */
@@ -68,6 +93,37 @@
             margin-bottom: 20px;
             border-radius: 5px;
             display: none; /* Hidden by default */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 30px;
+            }
+
+            .login-container h2 {
+                font-size: 1.6rem;
+            }
+
+            .login-container button {
+                font-size: 1rem;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 20px;
+            }
+
+            .login-container h2 {
+                font-size: 1.4rem;
+            }
+
+            .login-container button {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
         }
     </style>
 </head>

@@ -10,12 +10,8 @@ import face_recognition
  
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
- 
- 
+  
 users = {}
-
-
-
 
 import sqlite3
 
@@ -40,10 +36,6 @@ def init_db():
 # Call this function once at the start
 init_db()
 
-
-
-
- 
 # Initialize MediaPipe Hands
 mp_hands = mp.solutions.hands
  

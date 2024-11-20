@@ -2,12 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Face Registration</title>
     <style>
-        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-        video { border: 2px solid #3498db; border-radius: 8px; }
-        button { margin-top: 20px; padding: 10px 20px; background-color: #3498db; color: white; border: none; cursor: pointer; }
-        #message { margin-top: 10px; }
+        /* General Body Layout */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light background */
+        }
+
+        /* Heading Styling */
+        h2 {
+            color: #3498db; /* Blue color for heading */
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Video Styling */
+        video {
+            width: 100%;
+            max-width: 640px; /* Limit width */
+            height: auto;
+            border: 3px solid #3498db; /* Blue border for video */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+        }
+
+        /* Button Styling */
+        button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #3498db; /* Blue button */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Button Hover Effect */
+        button:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+            transform: scale(1.05); /* Slight scaling effect */
+        }
+
+        button:focus {
+            outline: none; /* Remove outline on focus */
+        }
+
+        /* Message Styling */
+        #message {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #e74c3c; /* Red color for messages */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 1.8rem;
+            }
+            button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.6rem;
+            }
+            video {
+                width: 90%; /* Make video slightly smaller */
+            }
+            button {
+                width: 100%;
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>

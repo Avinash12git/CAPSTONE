@@ -5,22 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Combined Login</title>
     <style>
+        /* General Body Layout */
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            font-family: Arial, sans-serif;
-            background-color: #f3f4f6;
             margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f6;
         }
 
+        /* Heading Styling */
         h1 {
             color: #3498db;
+            font-size: 2rem;
             margin-bottom: 20px;
         }
 
+        /* Video Styling */
         video {
             border: 3px solid #3498db;
             border-radius: 12px;
@@ -30,6 +34,7 @@
             margin-bottom: 20px;
         }
 
+        /* Button Styling */
         button {
             padding: 12px 24px;
             background-color: #3498db;
@@ -38,11 +43,12 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         button:hover {
             background-color: #2980b9;
+            transform: scale(1.05); /* Slight scaling effect on hover */
         }
 
         button:disabled {
@@ -50,16 +56,52 @@
             cursor: not-allowed;
         }
 
+        /* Message Styling */
         #message {
             font-size: 16px;
             margin-top: 10px;
+            color: #e74c3c; /* Red for error messages */
         }
 
+        /* Loading Text Styling */
         #loading {
             font-size: 16px;
             color: #e74c3c;
             display: none;
             margin-top: 10px;
+        }
+
+        /* Media Query for smaller screens */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            video {
+                width: 90%;
+                height: auto;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            video {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+                padding: 12px;
+                font-size: 16px;
+            }
         }
     </style>
 </head>
@@ -77,6 +119,7 @@
         const captureButton = document.getElementById('captureButton');
         let voicePasskey = '';
 
+        // Initialize the camera
         async function initCamera() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });

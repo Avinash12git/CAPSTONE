@@ -2,54 +2,90 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Options</title>
     <style>
+        /* General Body Styling */
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            font-family: Arial, sans-serif;
-            background-color: #f3f4f6;
+            background: linear-gradient(135deg, #e0f7fa, #80deea); /* Gradient Background */
             margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
         }
 
+        /* Heading Styling */
         h1 {
-            color: #3498db;
+            color: #3498db; /* Blue heading */
+            font-size: 2rem;
             margin-bottom: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
+        /* Button Container Styling */
         .button-container {
             display: flex;
+            flex-direction: column;
             gap: 20px;
+            align-items: center;
         }
 
+        /* Button Styling */
         button {
             padding: 16px 32px;
-            background-color: #3498db;
+            background-color: #3498db; /* Blue button */
             color: white;
             border: none;
             border-radius: 12px;
             cursor: pointer;
             font-size: 18px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
+        /* Button Hover Effect */
         button:hover {
-            background-color: #2980b9;
+            background-color: #2980b9; /* Darker blue on hover */
+            transform: scale(1.05); /* Slight scale up effect */
         }
 
+        /* Button Focus Effect */
         button:focus {
             outline: none;
+        }
+
+        /* Responsive Design for smaller screens */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.6rem; /* Smaller font size on mobile */
+            }
+
+            button {
+                width: 80%; /* Make buttons take up more space on small screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.4rem; /* Smaller font size for very small screens */
+            }
+
+            button {
+                width: 90%; /* Buttons take up most of the screen width */
+            }
         }
     </style>
 </head>
 <body>
     <h1>Login Options</h1>
     <div class="button-container">
-        <button onclick="redirectToGestureAndFaceANDVoice()">Login with Gesture and Face and Voice</button>
+        <button onclick="redirectToGestureAndFaceANDVoice()">Login with Gesture, Face, and Voice</button>
+        <!-- Uncomment below buttons when needed -->
         <!-- <button onclick="redirectToFaceAndVoice()">Login with Face and Voice</button> -->
         <!-- <button onclick="redirectToVoice()">Login with Voice</button> -->
     </div>
@@ -59,6 +95,7 @@
             window.location.href = '/combined_login1';
         }
 
+        // Uncomment the below functions when needed
         // function redirectToFaceAndVoice() {
         //     window.location.href = '/combined1_login';
         // }
