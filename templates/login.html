@@ -10,55 +10,71 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f4f8;
+            margin: 0;
+            background-color: #f0f4f8; /* Soft gray background */
             font-family: Arial, sans-serif;
         }
         .login-container {
-            background-color: #ffffff;
+            background-color: #ffffff; /* White card */
             padding: 40px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
             text-align: center;
+            max-width: 400px;
+            width: 90%;
         }
         .login-container h2 {
-            color: #4A90E2;
+            color: #4A90E2; /* Blue header */
+            margin-bottom: 20px;
         }
         .login-container input {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
             border-radius: 5px;
-            border: 1px solid #ddd;
+            border: 1px solid #ddd; /* Light gray border */
+            font-size: 16px;
         }
         .login-container button {
             width: 100%;
             padding: 12px;
-            background-color: #4A90E2;
+            background-color: #4A90E2; /* Blue button */
             border: none;
             border-radius: 5px;
-            color: #fff;
+            color: #fff; /* White text */
             font-weight: bold;
             cursor: pointer;
+            font-size: 16px;
             transition: background-color 0.3s ease;
         }
         .login-container button:hover {
-            background-color: #357ABD;
+            background-color: #357ABD; /* Darker blue hover */
         }
         .login-container p {
             margin-top: 15px;
+            font-size: 14px;
         }
         .login-container a {
-            color: #4A90E2;
+            color: #4A90E2; /* Blue link */
             text-decoration: none;
         }
         .login-container a:hover {
             text-decoration: underline;
+        }
+        .error-message {
+            color: #D8000C; /* Red error text */
+            background-color: #FFBABA; /* Light red background */
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            display: none; /* Hidden by default */
         }
     </style>
 </head>
 <body>
     <div class="login-container">
         <h2>User Login</h2>
+        <div id="errorMessage" class="error-message"></div> <!-- Error message container -->
         <form id="loginForm" method="POST">
             <input type="text" name="name" placeholder="Enter your username" required>
             <input type="password" name="password" placeholder="Enter your password" required>
@@ -77,12 +93,19 @@
                 body: formData
             });
 
-            // If login is successful, redirect to login_task.html
+            const errorMessage = document.getElementById('errorMessage');
+
             if (response.ok) {
+                // Login successful, redirect to the dashboard
                 window.location.href = '/login_task';
+            } else if (response.status === 401) {
+                // Show error message for invalid credentials
+                errorMessage.textContent = "Invalid username or password. Please try again.";
+                errorMessage.style.display = 'block';
             } else {
-                const result = await response.json();
-                alert(result.message || "Login failed");
+                // Handle unexpected errors
+                errorMessage.textContent = "An unexpected error occurred. Please try again later.";
+                errorMessage.style.display = 'block';
             }
         });
     </script>

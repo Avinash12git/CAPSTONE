@@ -151,18 +151,26 @@ def index():
 def register_task():
     return render_template('register_task.html')
 
-# Login Page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['name']
-        password = request.form['password']
-        if username in users and users[username]['password'] == password:
-            session['username'] = username
-            return redirect(url_for('login_task'))
+        username = request.form.get('name')
+        password = request.form.get('password')
+        
+        # Check if username exists and password matches
+        if username in users:
+            if users[username]['password'] == password:
+                session['username'] = username
+                return jsonify({'success': True})  # Login success
+            else:
+                # Incorrect password
+                return jsonify({'success': False, 'message': "Incorrect password. Please try again."}), 401
         else:
-            return render_template('login_fail.html')
+            # Username not found
+            return jsonify({'success': False, 'message': "Username does not exist."}), 401
+    
     return render_template('login.html')
+
 
 @app.route('/login_task', methods=['GET'])
 def login_task():
